@@ -1,0 +1,20 @@
+[project]
+name = "runmd"
+version = "0.1.0"
+description = "Run code directly from Markdown files, like a Jupyter notebook for mardown files"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Ben W", email = "brweinstein68@gmail.com" }
+]
+dependencies = [
+    "pyyaml"
+]
+requires-python = ">=3.8"
+
+[project.scripts]
+runmd = "core.cli:main"  # entrypoint for CLI
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
