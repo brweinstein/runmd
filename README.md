@@ -50,7 +50,7 @@ source venv/bin/activate
 pip install -e .
 ```
 
-If/when published to PyPI you can also install via pip:
+From PyPI you can also install via pip:
 
 ```bash
 pip install runmd
@@ -88,8 +88,7 @@ javascript: node {file}
 racket: racket {file}
 ```
 
-The `{file}` placeholder will be replaced with the temporary file path. If `{file}` is omitted the tool will append the
-temporary filename at the end of the command.
+The `{file}` placeholder will be replaced with the temporary file path. If `{file}` is omitted the tool will append the temporary filename at the end of the command.
 
 You can generate a default config with:
 
