@@ -50,12 +50,6 @@ source venv/bin/activate
 pip install -e .
 ```
 
-From PyPI you can also install via pip:
-
-```bash
-pip install runmd
-```
-
 Make sure your virtualenv/bin is in PATH if you installed locally:
 
 ```bash
