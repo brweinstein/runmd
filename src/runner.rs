@@ -65,19 +65,36 @@ pub async fn run_code(
 }
 
 fn create_temp_file(language: &str, code: &str) -> Result<NamedTempFile> {
-    let suffix = if language.chars().all(|c| c.is_alphanumeric()) {
-        format!(".{}", language)
-    } else {
-        String::new()
+    let suffix = match language {
+        "python" => ".py",
+        "javascript" | "js" => ".js", 
+        "rust" => ".rs",
+        "racket" => ".rkt",
+        "bash" | "sh" => ".sh",
+        "java" => ".java",
+        "cpp" | "c++" => ".cpp",
+        "c" => ".c",
+        "go" => ".go",
+        "ruby" => ".rb",
+        "php" => ".php",
+        "lua" => ".lua",
+        "r" => ".r",
+        "julia" => ".jl",
+        _ => if language.chars().all(|c| c.is_alphanumeric()) {
+            &format!(".{}", language)
+        } else {
+            ""
+        }
     };
 
-    let mut temp_file = NamedTempFile::with_suffix(&suffix)
+    let mut temp_file = NamedTempFile::with_suffix(suffix)
         .context("Failed to create temporary file")?;
 
-    std::io::Write::write_all(&mut temp_file, code.as_bytes())
+    use std::io::Write;
+    temp_file.write_all(code.as_bytes())
         .context("Failed to write to temporary file")?;
 
-    std::io::Write::flush(&mut temp_file)
+    temp_file.flush()
         .context("Failed to flush temporary file")?;
 
     Ok(temp_file)

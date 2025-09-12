@@ -1,19 +1,32 @@
 # runmd
 
-**Blazingly fast tool to run code blocks inside Markdown files and insert their outputs inline**
+A high-performance tool to execute code blocks in Markdown files and insert their outputs inline.
 
-> **Strongly Recommended**: Use the **Rust version** for 10-100x better performance, instant startup, and memory efficiency. The Python version is legacy and maintained for compatibility only.
+Written in Rust for maximum performance (10,000x+ faster parsing than Python). A legacy Python implementation is available but not actively improved.
 
-runmd transforms Markdown files into executable notebooks by finding fenced code blocks (```lang ... ```), executing them, and inserting standardized "**Output**" blocks with captured results. Perfect for documentation, tutorials, and iterative development.
+runmd transforms Markdown files into executable notebooks by finding fenced code blocks, executing them, and inserting standardized output blocks with captured results.
+
+This was created so I could run racket code in my markdown notes for my cs135 class.
 
 ## Features
 
-- **Lightning fast** execution for many languages (Python, Racket, Bash, Node, Ruby, Julia, Go, C/C++, Rust, Java, R, PHP, Lua, ...)
-- **Standardized output format**: Insert consistent output blocks after each code fence
-- **Preserve original content**: `runmd -c` cleanly removes outputs and restores original Markdown
-- **User-configurable** language command templates at `~/.config/runmd/languages.config`
-- **Built-in error handling**: Runtime/compiler errors captured and displayed inline
-- **Async/concurrent execution** (Rust version)
+- Fast execution for many languages (Python, Racket, Bash, Node, Ruby, Julia, Go, C/C++, Rust, Java, R, PHP, Lua, etc.)
+- Standardized output format with consistent output blocks
+- Clean output removal with `runmd -c` to restore original Markdown
+- Configurable language commands via `~/.config/runmd/languages.config`
+- Built-in error handling and async execution
+
+## Performance
+
+The Rust version delivers substantial performance improvements over the Python implementation:
+
+| Operation | Python Version | Rust Version | Speedup |
+|-----------|---------------|--------------|---------|
+| Parse 1MB markdown | 113430ms | **11ms** | **10279x faster** |
+| Execute 20 code blocks | 321ms | **83ms** | **3.9x faster** |
+| Clear 100 output blocks | 1ms | **5ms** | **0.2x slower** |
+
+Key benefits: 10,000x+ faster parsing, 4x faster execution, lower memory usage, parallel processing for multiple blocks.
 
 ## Quick Start
 
@@ -36,7 +49,7 @@ runmd --init-config
 
 ### Rust Version (Recommended)
 
-**From source** (requires Rust toolchain):
+Build from source:
 ```bash
 git clone https://github.com/brweinstein/runmd.git
 cd runmd
@@ -44,18 +57,34 @@ cargo build --release
 cargo install --path .
 ```
 
-Add to PATH:
-```bash
-export PATH="$HOME/.cargo/bin:$PATH"
-```
-
 ### Python Version (Legacy)
 
-**Development install**:
+The Python implementation in `core/` is no longer actively developed. Use only for compatibility:
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -e .
+```
+
+## Project Structure
+
+```
+src/                    # Rust implementation (active development)
+├── main.rs            # CLI entry point
+├── core.rs            # Markdown parsing and processing
+├── runner.rs          # Code execution engine
+├── languages.rs       # Language configurations
+└── config.rs          # Configuration management
+
+core/                  # Python implementation (legacy, not improved)
+├── cli.py            # Python CLI
+├── core.py           # Python processing logic
+├── runner.py         # Python execution
+└── languages.py      # Python language config
+
+tests/                 # Integration tests and benchmarks
+├── benchmark.py      # Performance comparison
+└── *.md             # Test markdown files
 ```
 
 ## Usage
@@ -105,19 +134,18 @@ runmd -c notes.md
 
 ## Development
 
-**Rust version**:
+Primary development is on the Rust implementation:
 ```bash
-cargo test                    # Run tests
+cargo test                    # Run integration tests
 cargo build --release        # Optimized build
-RUST_LOG=debug cargo run     # Debug output
+python tests/benchmark.py    # Performance benchmarks
 ```
 
-**Python version**:
+Python version (legacy, no active development):
 ```bash
 source venv/bin/activate
 pip install -r requirements-dev.txt
 pytest -q
-python -m core.cli file.md   # Local development
 ```
 
 ## Contributing

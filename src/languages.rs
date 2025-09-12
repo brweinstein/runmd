@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::process::Command;
 
+#[derive(Clone)]
 pub struct Languages {
    pub mappings: HashMap<String, String>,
 }
