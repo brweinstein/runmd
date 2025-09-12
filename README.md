@@ -1,5 +1,7 @@
 # runmd
 
+![Usage](./runmd.gif)
+
 A high-performance tool to execute code blocks in Markdown files and insert their outputs inline.
 
 Written in Rust for maximum performance (10,000x+ faster parsing than Python). A legacy Python implementation is available but not actively improved.
