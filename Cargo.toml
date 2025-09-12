@@ -1,0 +1,32 @@
+[package]
+name = "runmd"
+version = "0.2.0"
+edition = "2021"
+authors = ["Ben Weinstein <brweinstein@example.com>"]
+description = "Run code blocks inside Markdown files and insert their outputs inline"
+license = "MIT"
+homepage = "https://github.com/brweinstein/runmd"
+repository = "https://github.com/brweinstein/runmd"
+readme = "README.md"
+keywords = ["markdown", "code", "execution", "documentation"]
+categories = ["command-line-utilities", "text-processing"]
+
+[[bin]]
+name = "runmd"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+regex = "1.10"
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9"
+tokio = { version = "1.34", features = ["full"] }
+anyhow = "1.0"
+tempfile = "3.8"
+dirs = "5.0"
+colored = "2.0"
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "3.0"
+tempfile = "3.8"

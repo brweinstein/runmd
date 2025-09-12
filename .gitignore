@@ -2,3 +2,5 @@ venv/
 runmd.egg-info/
 core/__pycache__/
 dist/
+target/
+.github/
