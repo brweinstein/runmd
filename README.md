@@ -6,15 +6,6 @@
 
 runmd transforms Markdown files into executable notebooks by finding fenced code blocks (```lang ... ```), executing them, and inserting standardized "**Output**" blocks with captured results. Perfect for documentation, tutorials, and iterative development.
 
-## Performance Comparison
-
-| Operation | Python Version | **Rust Version** | Speedup |
-|-----------|---------------|------------------|---------|
-| Parse 1MB markdown | 45ms | **2ms** | **22.5x** |
-| Execute 100 blocks | 2.3s | **180ms** | **12.8x** |
-| Clear outputs | 120ms | **8ms** | **15x** |
-| Startup time | 80ms | **1ms** | **80x** |
-
 ## Features
 
 - **Lightning fast** execution for many languages (Python, Racket, Bash, Node, Ruby, Julia, Go, C/C++, Rust, Java, R, PHP, Lua, ...)
