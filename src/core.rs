@@ -208,7 +208,7 @@ async fn process_markdown_sequential(
         if block.skip {
             // Just reproduce the original block without running
             result.push_str("```");
-            result.push_str(&block.language);
+            if !block.fence_info.is_empty() { result.push_str(&block.fence_info); } else { result.push_str(&block.language); }
             result.push('\n');
             result.push_str(&block.code);
             if !block.code.ends_with('\n') {
@@ -222,7 +222,7 @@ async fn process_markdown_sequential(
 
             // Build output more efficiently
             result.push_str("```");
-            result.push_str(&block.language);
+            if !block.fence_info.is_empty() { result.push_str(&block.fence_info); } else { result.push_str(&block.language); }
             result.push('\n');
             result.push_str(&block.code);
             if !block.code.ends_with('\n') {
@@ -295,7 +295,7 @@ async fn process_markdown_parallel(
         if block.skip {
             // Reproduce original skipped block
             result.push_str("```");
-            result.push_str(&block.language);
+            if !block.fence_info.is_empty() { result.push_str(&block.fence_info); } else { result.push_str(&block.language); }
             result.push('\n');
             result.push_str(&block.code);
             if !block.code.ends_with('\n') {
@@ -308,7 +308,7 @@ async fn process_markdown_parallel(
             // Map i -> position among non-skipped indices
             let non_skipped_index = code_blocks.iter().take(i + 1).filter(|b| !b.skip).count() - 1;
             result.push_str("```");
-            result.push_str(&block.language);
+            if !block.fence_info.is_empty() { result.push_str(&block.fence_info); } else { result.push_str(&block.language); }
             result.push('\n');
             result.push_str(&block.code);
             if !block.code.ends_with('\n') {
