@@ -96,6 +96,7 @@ tests/                 # Integration tests and benchmarks
 runmd <file>             # Process markdown file
 runmd -c <file>          # Clear outputs only  
 runmd --init-config      # Generate default config
+runmd -p <file>          # Force parallel execution (if >1 runnable blocks)
 ```
 
 **How it works**:
@@ -103,6 +104,30 @@ runmd --init-config      # Generate default config
 - Creates temporary files and executes using configured commands
 - Inserts output blocks with captured stdout/stderr
 - Missing interpreters show error messages (cleanly removable with `-c`)
+
+### Skipping a Code Block
+
+Add `-nr` (or `--no-run`) immediately after the language in the opening fence to skip execution while preserving the block:
+
+````markdown
+```python -nr
+print("This will NOT be executed")
+```
+
+```python
+print("This WILL run")
+```
+````
+
+The skipped block is reproduced exactly without an output section.
+
+### Forcing Parallel Execution
+
+By default, runmd executes blocks sequentially unless there are 4 or more runnable blocks. Use `-p` / `--parallel` to force parallel execution when more than one block is runnable:
+
+```bash
+runmd -p notes.md
+```
 
 ## Configuration
 

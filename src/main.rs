@@ -34,6 +34,13 @@ async fn main() -> Result<()> {
                 .help("Create ~/.config/runmd/languages.config with sensible defaults")
                 .action(clap::ArgAction::SetTrue),
         )
+        .arg(
+            Arg::new("parallel")
+                .short('p')
+                .long("parallel")
+                .help("Force parallel execution when more than one runnable code block present")
+                .action(clap::ArgAction::SetTrue),
+        )
         .get_matches();
 
     if matches.get_flag("init-config") {
@@ -50,10 +57,12 @@ async fn main() -> Result<()> {
 
     let content = std::fs::read_to_string(&file_path)?;
 
+    let force_parallel = matches.get_flag("parallel");
+
     let result = if matches.get_flag("clear") {
         clear_outputs(&content)?
     } else {
-        process_markdown(&content).await?
+        process_markdown(&content, force_parallel).await?
     };
 
     std::fs::write(&file_path, result)?;

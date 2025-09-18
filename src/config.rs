@@ -11,14 +11,15 @@ pub struct Config {
 impl Config {
     pub fn load() -> Result<Self> {
         let config_path = Self::default_config_path()?;
-        
+
         if config_path.exists() {
-            let content = std::fs::read_to_string(&config_path)
-                .with_context(|| format!("Failed to read config file: {}", config_path.display()))?;
-            
-            let languages: HashMap<String, String> = serde_yaml::from_str(&content)
-                .with_context(|| "Failed to parse config file")?;
-            
+            let content = std::fs::read_to_string(&config_path).with_context(|| {
+                format!("Failed to read config file: {}", config_path.display())
+            })?;
+
+            let languages: HashMap<String, String> =
+                serde_yaml::from_str(&content).with_context(|| "Failed to parse config file")?;
+
             Ok(Config { languages })
         } else {
             Ok(Self::default())
@@ -29,7 +30,7 @@ impl Config {
         let config_dir = dirs::config_dir()
             .context("Could not determine config directory")?
             .join("runmd");
-        
+
         Ok(config_dir.join("languages.config"))
     }
 
@@ -41,7 +42,7 @@ impl Config {
         let default_config = Self::default();
         let content = serde_yaml::to_string(&default_config.languages)?;
         std::fs::write(path, content)?;
-        
+
         Ok(())
     }
 }
@@ -49,7 +50,7 @@ impl Config {
 impl Default for Config {
     fn default() -> Self {
         let mut languages = HashMap::new();
-        
+
         languages.insert("python".to_string(), "python3 {file}".to_string());
         languages.insert("py".to_string(), "python3 {file}".to_string());
         languages.insert("racket".to_string(), "racket {file}".to_string());
@@ -62,12 +63,24 @@ impl Default for Config {
         languages.insert("julia".to_string(), "julia {file}".to_string());
         languages.insert("lua".to_string(), "lua {file}".to_string());
         languages.insert("r".to_string(), "Rscript {file}".to_string());
-        languages.insert("rust".to_string(), "sh -c 'rustc {file} -o /tmp/runmd_rust && /tmp/runmd_rust'".to_string());
+        languages.insert(
+            "rust".to_string(),
+            "sh -c 'rustc {file} -o /tmp/runmd_rust && /tmp/runmd_rust'".to_string(),
+        );
         languages.insert("go".to_string(), "go run {file}".to_string());
-        languages.insert("java".to_string(), "sh -c 'javac {file} && java $(basename {file} .java)'".to_string());
-        languages.insert("cpp".to_string(), "sh -c 'g++ {file} -o /tmp/runmd_cpp && /tmp/runmd_cpp'".to_string());
-        languages.insert("c".to_string(), "sh -c 'gcc {file} -o /tmp/runmd_c && /tmp/runmd_c'".to_string());
-        
+        languages.insert(
+            "java".to_string(),
+            "sh -c 'javac {file} && java $(basename {file} .java)'".to_string(),
+        );
+        languages.insert(
+            "cpp".to_string(),
+            "sh -c 'g++ {file} -o /tmp/runmd_cpp && /tmp/runmd_cpp'".to_string(),
+        );
+        languages.insert(
+            "c".to_string(),
+            "sh -c 'gcc {file} -o /tmp/runmd_c && /tmp/runmd_c'".to_string(),
+        );
+
         Config { languages }
     }
 }
